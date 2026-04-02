@@ -1,0 +1,363 @@
+[
+    {
+        "id": "a070401ec1bc2eb1",
+        "type": "tab",
+        "label": "Zone vert",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "984df92e9f21ee48",
+        "type": "mqtt in",
+        "z": "a070401ec1bc2eb1",
+        "name": "",
+        "topic": "vert/capteur/dht/temperature",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "39d6aef39ca31177",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 400,
+        "wires": [
+            [
+                "a9114a7a45dc490c",
+                "f590dda775303fb8",
+                "c83a9d3bea90b224"
+            ]
+        ]
+    },
+    {
+        "id": "a9114a7a45dc490c",
+        "type": "debug",
+        "z": "a070401ec1bc2eb1",
+        "name": "temperature",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "c83a9d3bea90b224",
+        "type": "influxdb out",
+        "z": "a070401ec1bc2eb1",
+        "influxdb": "3ba3fde0354c6ffb",
+        "name": "",
+        "measurement": "temperature",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "groupe_2_SAE_IOM",
+        "bucket": "zone_vert",
+        "x": 610,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "f590dda775303fb8",
+        "type": "function",
+        "z": "a070401ec1bc2eb1",
+        "name": "function 12",
+        "func": "if (msg.payload.temperature > 30){\n    msg.topic = \"Alerte températaure\";\n    msg.payload = \"Température élevéeen salle de surveillance : 40°C !\";\n    return msg;\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 230,
+        "y": 520,
+        "wires": [
+            [
+                "eab13591a701eff5",
+                "1b60a7e179b03a55"
+            ]
+        ]
+    },
+    {
+        "id": "eab13591a701eff5",
+        "type": "http request",
+        "z": "a070401ec1bc2eb1",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.callmebot.com/whatsapp.php?phone=33766489074&text=Température+élevée+en+salle+de+surveillance&apikey=5438638",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 580,
+        "wires": [
+            [
+                "06c0c6fb53c48b5e"
+            ]
+        ]
+    },
+    {
+        "id": "06c0c6fb53c48b5e",
+        "type": "debug",
+        "z": "a070401ec1bc2eb1",
+        "name": "debug 18",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "743fb8f08736d4ef",
+        "type": "inject",
+        "z": "a070401ec1bc2eb1",
+        "name": "Déclencher une température élevée",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "40",
+        "payloadType": "json",
+        "x": 220,
+        "y": 100,
+        "wires": [
+            [
+                "e82cb8904a718b82"
+            ]
+        ]
+    },
+    {
+        "id": "e82cb8904a718b82",
+        "type": "mqtt out",
+        "z": "a070401ec1bc2eb1",
+        "name": "",
+        "topic": "vert/capteur/dht/temperature",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "39d6aef39ca31177",
+        "x": 520,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "1b60a7e179b03a55",
+        "type": "e-mail",
+        "z": "a070401ec1bc2eb1",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "yabreami5418@mail.com",
+        "dname": "Mail",
+        "x": 450,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "d7d740037bba5443",
+        "type": "mqtt in",
+        "z": "a070401ec1bc2eb1",
+        "name": "",
+        "topic": "vert/capteur/gaz",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "39d6aef39ca31177",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "9054271edece52c9",
+                "8355ef6317a6a184"
+            ]
+        ]
+    },
+    {
+        "id": "9054271edece52c9",
+        "type": "debug",
+        "z": "a070401ec1bc2eb1",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "5fe2892bbe81f8a5",
+        "type": "mqtt in",
+        "z": "a070401ec1bc2eb1",
+        "name": "",
+        "topic": "vert/capteur/dht/humidite",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "39d6aef39ca31177",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 320,
+        "wires": [
+            [
+                "d95f06e10ba38ed2",
+                "44e9165a09604249"
+            ]
+        ]
+    },
+    {
+        "id": "d95f06e10ba38ed2",
+        "type": "debug",
+        "z": "a070401ec1bc2eb1",
+        "name": "humidite",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "44e9165a09604249",
+        "type": "influxdb out",
+        "z": "a070401ec1bc2eb1",
+        "influxdb": "3ba3fde0354c6ffb",
+        "name": "",
+        "measurement": "humidite",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "groupe_2_SAE_IOM",
+        "bucket": "zone_vert",
+        "x": 640,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "8355ef6317a6a184",
+        "type": "influxdb out",
+        "z": "a070401ec1bc2eb1",
+        "influxdb": "3ba3fde0354c6ffb",
+        "name": "",
+        "measurement": "gaz",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "groupe_2_SAE_IOM",
+        "bucket": "zone_vert",
+        "x": 580,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "39d6aef39ca31177",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.149",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3ba3fde0354c6ffb",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "56fa9d17b07e9b4e",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0",
+            "node-red-node-email": "5.2.1"
+        }
+    }
+]
